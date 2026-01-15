@@ -12,6 +12,10 @@ env:
   EXPORT_NAME: dodge-the-creeps
   PROJECT_PATH: .
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   export-windows:
     name: Windows Export
@@ -60,7 +64,7 @@ jobs:
           mkdir -v -p build/linux
           EXPORT_DIR="$(readlink -f build)"
           cd $PROJECT_PATH
-          godot --headless --verbose --export-release "Linux/X11" "$EXPORT_DIR/linux/$EXPORT_NAME.x86_64"
+          godot --headless --verbose --export-release "Linux" "$EXPORT_DIR/linux/$EXPORT_NAME.x86_64"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -70,6 +74,7 @@ jobs:
   export-web:
     name: Web Export
     runs-on: ubuntu-24.04  # Use 24.04 with godot 4
+
     container:
       image: barichello/godot-ci:4.3
     steps:
